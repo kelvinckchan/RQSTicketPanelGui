@@ -63,13 +63,13 @@ public class TicketPopUp {
 		frame.getContentPane().add(lblNewLabel, BorderLayout.CENTER);
 
 		JLabel label = new JLabel(Tid);
-		label.setFont(new Font("Arial", Font.PLAIN, 50));
-		label.setBounds(73, 63, 163, 93);
+		label.setFont(new Font("Arial", Font.PLAIN, 80));
+		label.setBounds(60, 63, 180, 93);
 		frame.getContentPane().add(label);
 
 		JLabel lblYourTicketNumber = new JLabel("Your ticket number is :");
 		lblYourTicketNumber.setFont(new Font("Arial", Font.PLAIN, 20));
-		lblYourTicketNumber.setBounds(48, 27, 198, 49);
+		lblYourTicketNumber.setBounds(48, 27, 250, 49);
 		frame.getContentPane().add(lblYourTicketNumber);
 
 		JLabel lblPersons = new JLabel(ticketRep.getClient().getnPerson() + " - Person(s)");
