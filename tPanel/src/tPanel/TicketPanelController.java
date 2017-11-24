@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -26,8 +27,12 @@ public class TicketPanelController {
 
 	public TicketPanelController() throws IOException {
 		do {
-			socket = new Socket(ServerIP, ServerPort);
-		} while (!socket.isConnected());
+			try {
+				socket = new Socket(ServerIP, ServerPort);
+			} catch (ConnectException e) {
+				System.err.println("Trying to connect Server..");
+			}
+		} while (socket == null || !socket.isConnected());
 		System.out.println("Socket Connected!");
 		out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
 		in = new DataInputStream(socket.getInputStream());
@@ -74,7 +79,7 @@ public class TicketPanelController {
 					Client client = new Client(ClientID, nPerson);
 					Ticket ticket = new Ticket(TicketID, client);
 					TicketRepList.add(new TicketRep(client, ticket));
-//					notifyAll();
+					// notifyAll();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
