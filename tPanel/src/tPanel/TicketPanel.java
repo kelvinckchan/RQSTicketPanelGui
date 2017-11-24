@@ -25,6 +25,7 @@ public class TicketPanel {
 	public static TextField display = new TextField();
 	public static String ticketNumber;
 	public static int ticketNo;
+	TicketPanelController TPController;
 
 	/**
 	 * Launch the application.
@@ -34,6 +35,7 @@ public class TicketPanel {
 			public void run() {
 				try {
 					TicketPanel window = new TicketPanel();
+
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -50,6 +52,7 @@ public class TicketPanel {
 	 */
 	public TicketPanel() throws IOException {
 		initialize();
+		TPController = new TicketPanelController();
 	}
 
 	/**
@@ -57,6 +60,10 @@ public class TicketPanel {
 	 */
 
 	class ImagePanel extends JComponent {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private Image image;
 
 		public ImagePanel(Image image) {
@@ -77,9 +84,9 @@ public class TicketPanel {
 		Image img = new ImageIcon(this.getClass().getResource("/background.jpg")).getImage();
 		frame.setContentPane(new ImagePanel(img));
 		frame.getContentPane().setLayout(null);
-
+		// HERE!
 		ticketNo = 1;
-		ticketNumber = String.format("%03d", ticketNo);
+		ticketNumber = String.format("%04d", ticketNo);
 
 		display.setForeground(Color.LIGHT_GRAY);
 		display.setFont(new Font("Arial", Font.BOLD, 37));
@@ -237,15 +244,29 @@ public class TicketPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (!"PLEASE INSERT NUMBER".equals(display.getText())) {
-					ticketNumber = String.format("%03d", ticketNo);
-					new TicketPopUp().frame.setVisible(true);
-					display.setForeground(Color.LIGHT_GRAY);
-					display.setText("PLEASE INSERT NUMBER");
-					if (ticketNo == 999) {
-						ticketNo = 1;
-					} else {
-						ticketNo++;
+
+					TPController.SendTicketReq(Integer.parseInt(display.getText()));
+
+					// ticketNumber = String.format("%03d", ticketNo);
+					while (TPController.getTicketRepList().size() == 0) {
+						try {
+							Thread.sleep(500);
+							System.out.println("Waiting For TicketReply");
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
+
+					while (TPController.getTicketRepList().size() > 0) {
+						new TicketPopUp(TPController.getTicketRepList().poll()).frame.setVisible(true);
+						display.setForeground(Color.LIGHT_GRAY);
+						display.setText("PLEASE INSERT NUMBER");
+					}
+					// if (ticketNo == 999) {
+					// ticketNo = 1;
+					// } else {
+					// ticketNo++;
+					// }
 				}
 			}
 		});

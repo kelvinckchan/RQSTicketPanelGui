@@ -4,6 +4,9 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import AppKickstarter.Msg.TicketRep;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -30,8 +33,16 @@ public class TicketPopUp {
 
 	/**
 	 * Create the application.
+	 * 
+	 * @param ticketRep
 	 */
 	public TicketPopUp() {
+		initialize();
+	}
+	TicketRep ticketRep ;
+	
+	public TicketPopUp(TicketRep ticketRep) {
+		this.ticketRep=ticketRep;
 		initialize();
 	}
 
@@ -39,30 +50,33 @@ public class TicketPopUp {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame("Ticket "+TicketPanel.ticketNumber);
+		
+		String Tid = String.format("%04d", ticketRep.getTicket().getTicketID());
+		
+		frame = new JFrame("Ticket " + Tid);
 		frame.setBounds(100, 100, 300, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		frame.getContentPane().setBackground( Color.white );
-		
+		frame.getContentPane().setBackground(Color.white);
+
 		JLabel lblNewLabel = new JLabel("New label");
 		frame.getContentPane().add(lblNewLabel, BorderLayout.CENTER);
-		
-		JLabel label = new JLabel(TicketPanel.ticketNumber);
-		label.setFont(new Font("Arial", Font.PLAIN, 80));
+
+		JLabel label = new JLabel(Tid);
+		label.setFont(new Font("Arial", Font.PLAIN, 50));
 		label.setBounds(73, 63, 163, 93);
 		frame.getContentPane().add(label);
-		
+
 		JLabel lblYourTicketNumber = new JLabel("Your ticket number is :");
 		lblYourTicketNumber.setFont(new Font("Arial", Font.PLAIN, 20));
 		lblYourTicketNumber.setBounds(48, 27, 198, 49);
 		frame.getContentPane().add(lblYourTicketNumber);
-		
-		JLabel lblPersons = new JLabel(TicketPanel.display.getText()+" - Person(s)");
+
+		JLabel lblPersons = new JLabel(ticketRep.getClient().getnPerson() + " - Person(s)");
 		lblPersons.setFont(new Font("Arial", Font.PLAIN, 15));
 		lblPersons.setBounds(97, 160, 91, 27);
 		frame.getContentPane().add(lblPersons);
-		
+
 		JLabel lblPleaseWaitFor = new JLabel("Please Wait for a moment.");
 		lblPleaseWaitFor.setFont(new Font("Arial", Font.PLAIN, 15));
 		lblPleaseWaitFor.setBounds(58, 183, 188, 54);
@@ -71,6 +85,6 @@ public class TicketPopUp {
 
 	public void setVisible() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

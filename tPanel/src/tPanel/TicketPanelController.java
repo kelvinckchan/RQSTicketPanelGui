@@ -7,12 +7,14 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import AppKickstarter.Msg.*;
 import AppKickstarter.Server.Client;
 import AppKickstarter.Server.Ticket;
 
-public class GuiDisplayPanel {
+public class TicketPanelController {
 
 	private final String ServerIP = "127.0.0.1";
 	private final int ServerPort = 54321;
@@ -20,22 +22,31 @@ public class GuiDisplayPanel {
 
 	private PrintWriter out;
 	private DataInputStream in;
-	ArrayList<TicketRep> TicketRepList = new ArrayList<TicketRep>();
+	private Queue<TicketRep> TicketRepList = new LinkedList<TicketRep>();
 
-	public void run() throws IOException {
-		this.socket = new ServerSocket(ServerPort).accept();
-		in = new DataInputStream(socket.getInputStream());
+	public TicketPanelController() throws IOException {
+		do {
+			socket = new Socket(ServerIP, ServerPort);
+		} while (!socket.isConnected());
+		System.out.println("Socket Connected!");
 		out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+		in = new DataInputStream(socket.getInputStream());
 		SocketInHandler socketHandler = new SocketInHandler();
 		new Thread(socketHandler).start();
 	}
 
-	static int clientID = 0;
+	static int clientID = 1;
 
 	public void SendTicketReq(int nPerson) {
-		String ClientID = "Client-" + clientID++;
+		String ClientID = "Client-" + String.format("%04d", clientID++);
 		TicketReq ticketReq = new TicketReq(new Client(ClientID, nPerson));
+		System.out.println("Sent> " + ticketReq.toString());
 		out.write(ticketReq.toString());
+		out.flush();
+	}
+
+	public Queue<TicketRep> getTicketRepList() {
+		return TicketRepList;
 	}
 
 	class SocketInHandler implements Runnable {
@@ -47,9 +58,11 @@ public class GuiDisplayPanel {
 		public void run() {
 			try {
 				while (true) {
+					in = new DataInputStream(socket.getInputStream());
 					byte[] buffer = new byte[1024];
 					in.read(buffer);
 					String IncomingMsg = new String(buffer);
+					System.out.println("Receive> " + IncomingMsg);
 					String[] SplitedMsg = IncomingMsg.split(":");
 					String Type = SplitedMsg[0];
 					String MsgDetail = SplitedMsg[1];
@@ -61,6 +74,7 @@ public class GuiDisplayPanel {
 					Client client = new Client(ClientID, nPerson);
 					Ticket ticket = new Ticket(TicketID, client);
 					TicketRepList.add(new TicketRep(client, ticket));
+//					notifyAll();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
