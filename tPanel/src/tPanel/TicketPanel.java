@@ -71,6 +71,7 @@ public class TicketPanel {
 	}
 
 	private void initialize() throws IOException {
+		display.setEditable(false);
 		frame = new JFrame("Queueing System");
 		frame.setSize(700, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -251,6 +252,7 @@ public class TicketPanel {
 		});
 
 		txtTable_1 = new JTextField();
+		txtTable_1.setEditable(false);
 		txtTable_1.setBackground(new Color(255, 250, 250));
 		txtTable_1.setFont(new Font("Arial", Font.PLAIN, 30));
 		txtTable_1.setText("000");
