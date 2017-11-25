@@ -11,6 +11,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 
+/**
+ * This class implements a TicketPopUp
+ * @author user
+ * @version 1.0
+ */
+
+
 public class TicketPopUp {
 
 	protected JFrame frame;
@@ -34,7 +41,7 @@ public class TicketPopUp {
 	/**
 	 * Create the application.
 	 * 
-	 * @param ticketRep
+	 * @param : ticketRep
 	 */
 	public TicketPopUp() {
 		initialize();
@@ -48,6 +55,7 @@ public class TicketPopUp {
 
 	/**
 	 * Initialize the contents of the frame.
+	 * Show the content of the ticket
 	 */
 	private void initialize() {
 		

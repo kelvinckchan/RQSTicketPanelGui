@@ -16,6 +16,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+/**
+ * This class implements a ticket panel for client to get a ticket
+ * @author 
+ * @version 1.0
+ */
+
 public class TicketPanel {
 
 	private JFrame frame;
@@ -57,12 +63,11 @@ public class TicketPanel {
 
 	/**
 	 * Initialize the contents of the frame.
+	 * set the background image
 	 */
 
 	class ImagePanel extends JComponent {
-		/**
-		 * 
-		 */
+		
 		private static final long serialVersionUID = 1L;
 		private Image image;
 
@@ -76,6 +81,11 @@ public class TicketPanel {
 
 		}
 	}
+	
+	/**
+	 * Design the panel for inputting number of person
+	 *  
+	 */
 
 	private void initialize() throws IOException {
 		display.setEditable(false);		frame = new JFrame("Queueing System");

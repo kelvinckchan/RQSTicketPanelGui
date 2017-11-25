@@ -15,6 +15,12 @@ import AppKickstarter.Msg.*;
 import AppKickstarter.Server.Client;
 import AppKickstarter.Server.Ticket;
 
+/**
+ * This class implements a controller for the ticket panel
+ * @author user
+ * @version 1.0
+ */
+
 public class TicketPanelController {
 
 	private final String ServerIP = "127.0.0.1";
@@ -25,6 +31,10 @@ public class TicketPanelController {
 	private DataInputStream in;
 	private Queue<TicketRep> TicketRepList = new LinkedList<TicketRep>();
 
+	/**
+	 * Connect to Server
+	 */
+	
 	public TicketPanelController() throws IOException {
 		do {
 			try {
@@ -42,6 +52,10 @@ public class TicketPanelController {
 
 	static int clientID = 1;
 
+	/**
+	 * Send a ticket request
+	 */
+	
 	public void SendTicketReq(int nPerson) {
 		String ClientID = "Client-" + String.format("%04d", clientID++);
 		TicketReq ticketReq = new TicketReq(new Client(ClientID, nPerson));
@@ -49,16 +63,30 @@ public class TicketPanelController {
 		out.write(ticketReq.toString());
 		out.flush();
 	}
+	
+	/**
+	 * This returns the current TicketRep List
+	 * @return This TicketRepList
+	 */
+
 
 	public Queue<TicketRep> getTicketRepList() {
 		return TicketRepList;
 	}
+	
+	/**
+	 * This class implements SocketInHandler
+	 */
 
 	class SocketInHandler implements Runnable {
 		private DataInputStream in;
 
 		public SocketInHandler() {
 		}
+		
+		/**
+		 * Receive and read the IncomingMsg
+		 */
 
 		public void run() {
 			try {
